@@ -1,0 +1,9 @@
+$border-radius-data: (
+  base: 3px,
+  large: 6px,
+);
+
+@function border-radius($size: base)
+{
+    @return map-get($border-radius-data, $size);
+}

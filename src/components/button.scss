@@ -1,0 +1,346 @@
+.Mobius
+{
+    &-button
+    {
+        font-size: 14px;
+        font-weight: 600;
+
+        display: flex;
+        display: inline-flex;
+        align-items: center;
+
+        margin: 0;
+        padding: 6px 25px;
+
+        cursor: pointer;
+        user-select: none;
+        transition: background .3s, color .3s, opacity .3s, box-shadow .3s;
+        white-space: nowrap;
+        text-decoration: none;
+
+        color: #fff;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        outline: none;
+        background: $havelock-blue;
+        box-shadow: 0 2px 3px 0 rgba(#000, .08), inset 0 -1px 0 0 rgba(#000, .08), inset 0 1px 0 0 rgba(#fff, .08);
+        text-shadow: 0 1px 1px rgba(#000, .08);
+
+        @include font-family();
+        -webkit-appearance: none;
+                appearance: none;
+        @include breakpoint(mobile)
+        {
+            white-space: normal;
+        }
+        $states: (
+        default: $havelock-blue,
+        secondary: $bright-gray,
+        alt: $bright-gray,
+        error: $carnation,
+        delete: $carnation,
+        warning: $tree-poppy,
+        fun: $purple-heart,
+        w4: $w4-red,
+        success: $pastel-green,
+        ghost: #fff
+        );
+
+        &:focus
+        {
+            box-shadow: 0 0 0 .2rem rgba($havelock-blue,.5);
+        }
+
+        .spinner,
+        .spinner:before
+        {
+            box-sizing: border-box;
+            width: 20px;
+            height: 20px;
+        }
+
+        .spinner:before
+        {
+            display: block;
+
+            content: '';
+            animation: spinner .6s linear infinite;
+
+            border: 2px solid #fff;
+            border-top-color: rgba(#000, 0);
+            border-radius: 100%;
+            box-shadow: 0 2px 2px 1px rgba(#000, .06);
+        }
+
+        .spinner-container
+        {
+            z-index: 10;
+
+            overflow: hidden;
+
+            width: 20px;
+            height: 20px;
+            margin: 0 5px 0 0;
+
+            transition: width .4s;
+            transform: translateX(-5px);
+        }
+
+        &__icon
+        {
+            margin: 0 5px 0 0;
+
+            transform: translateX(-5px);
+        }
+
+        // &:active {
+        //   transform: translateY(1px);
+        // }
+
+        &__block,
+        &.full
+        {
+            display: block;
+
+            width: 100%;
+        }
+
+        &:hover
+        {
+            opacity: .95;
+        }
+
+        &__icon-only
+        {
+            padding: 6px;
+            svg
+            {
+                margin: 0;
+
+                transform: translateX(0);
+            }
+            .Mobius-button__text
+            {
+                display: none;
+            }
+        }
+
+        &--is-loading
+        {
+            transition: all cubic-bezier(.175, .885, .32, 1.275);
+            pointer-events: none;
+
+            opacity: .8;
+        }
+
+        &--is-disabled,
+        &[disabled]
+        {
+            pointer-events: none;
+
+            opacity: .4;
+        }
+
+        &__size
+        {
+            &--small
+            {
+                font-size: 12px;
+
+                padding: 6px 9px;
+
+                border-radius: 3px;
+                .Mobius-button__icon
+                {
+                    width: 16px !important;
+                    height: 16px !important;
+                    margin: 0 0 0 3px;
+                }
+
+                .spinner,
+                .spinner-container,
+                .spinner:before
+                {
+                    width: 15px;
+                    height: 15px;
+                }
+
+                .spinner-container
+                {
+                    transform: translateX(0);
+                }
+            }
+
+            &--large
+            {
+                font-size: 16px;
+
+                padding: 14px 30px;
+
+                border-radius: 4px;
+            }
+        }
+
+        &.small
+        {
+            @extend .Mobius-button__size--small;
+        }
+
+        &.large
+        {
+            @extend .Mobius-button__size--large;
+        }
+
+
+
+        @keyframes spinner
+        {
+            to
+            {
+                transform: rotate(360deg);
+            }
+        }
+
+        @each $key, $value in $states
+        {
+            &__type--#{$key}
+            {
+                background: linear-gradient($value 0%, darken($value, 2%) 100%);
+
+                .Mobius-button__icon
+                {
+                    fill: currentColor;
+                }
+
+                &.Mobius-button__input
+                {
+                    color: #383f47;
+                    border: 1px solid rgba(#000,.1);
+                    background: #fff;
+                    box-shadow: 0 1px 2px 0 rgba(129, 138, 150, .08);
+                    text-shadow: none;
+                    svg
+                    {
+                        fill: #383f47;
+                    }
+                    &.Mobius-button--is-active
+                    {
+                        color: #fff;
+                        background: #383f47;
+                    }
+                }
+
+                &.Mobius-button--is-active
+                {
+                    background: $value;
+                    .Mobius-button__icon
+                    {
+                        fill: #fff;
+                    }
+                }
+
+
+                &.Mobius-button__outline,
+                &.outline
+                {
+                    padding-top: 4px;
+                    padding-bottom: 4px;
+
+                    color: $value;
+                    border: 2px solid $value;
+                    background: none;
+                    box-shadow: none;
+
+                    &:hover:not(.Mobius-button__type--ghost)
+                    {
+                        color: #fff;
+                        background: $value;
+                    }
+                }
+
+                &:focus
+                {
+                    box-shadow: 0 0 0 .2rem rgba($value,.5);
+                }
+            }
+        }
+
+        &.outline
+        {
+            @extend .Mobius-button__type--default.outline;
+        }
+
+        &.primary
+        {
+            @extend .Mobius-button__type--default;
+
+
+            &.outline
+            {
+                @extend .Mobius-button__type--default.outline;
+                &:focus
+                {
+                    box-shadow: 0 0 0 .2rem rgba($havelock-blue,.5);
+                }
+            }
+        }
+
+        &.secondary
+        {
+            @extend .Mobius-button__type--secondary;
+
+            &.outline
+            {
+                @extend .Mobius-button__type--secondary.outline;
+            }
+        }
+
+        &.success
+        {
+            @extend .Mobius-button__type--success;
+            &.outline
+            {
+                @extend .Mobius-button__type--success.outline;
+            }
+        }
+
+        &.delete,
+        &.error
+        {
+            @extend .Mobius-button__type--delete;
+            &.outline
+            {
+                @extend .Mobius-button__type--delete.outline;
+            }
+        }
+
+        &.warning
+        {
+            @extend .Mobius-button__type--warning;
+            &.outline
+            {
+                @extend .Mobius-button__type--warning.outline;
+            }
+        }
+
+        &.fun
+        {
+            @extend .Mobius-button__type--warning;
+            &.outline
+            {
+                @extend .Mobius-button__type--fun.outline;
+            }
+        }
+
+        &__blank
+        {
+            font-weight: normal;
+
+            color: #000;
+            border: none;
+            background: none;
+            box-shadow: none;
+            text-shadow: none;
+        }
+    }
+}
